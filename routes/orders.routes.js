@@ -54,8 +54,9 @@ router.get('/:id', (req, res) => {
 // POST /api/orders
 router.post('/', (req, res) => {
   const { customer, status, total } = req.body;
+  const trimmedCustomer = customer?.trim();
 
-  if (!customer || !status || total === undefined) {
+  if (!trimmedCustomer || !status || total === undefined) {
     return res.status(400).json({
       success: false,
       error: {
@@ -65,7 +66,7 @@ router.post('/', (req, res) => {
     });
   }
 
-  const newOrder = { id: nextId++, customer, status, total };
+  const newOrder = { id: nextId++, customer: trimmedCustomer, status, total };
   orders.push(newOrder);
 
   res.status(201).json({
